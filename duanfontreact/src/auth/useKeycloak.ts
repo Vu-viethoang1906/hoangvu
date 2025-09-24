@@ -3,23 +3,33 @@ import { useKeycloak } from "@react-keycloak/web";
 export const useAuth = () => {
   const { keycloak, initialized } = useKeycloak();
 
+  // Đăng nhập
   const login = async () => {
     try {
       await keycloak.login();
-      
-      console.log("✅ Login thành công");
-    } catch (error) {
-      console.error("❌ Login thất bại:", error);
+      if (keycloak.token) {
+        localStorage.setItem("token", keycloak.token);
+        localStorage.setItem("refreshToken", keycloak.refreshToken || "");
+        localStorage.setItem("Type_login", "SSO");
+        return true;
+      }
+      return false;
+    } catch (err) {
+      console.error("❌ Login thất bại:", err);
+      return false;
     }
-   
   };
 
+  // Đăng xuất
   const logout = async () => {
     try {
-      await keycloak.logout({ redirectUri: window.location.origin });
+      if (localStorage.getItem("Type_login") === "SSO") {
+        await keycloak.logout({ redirectUri: window.location.origin });
+      }
+      localStorage.clear();
       console.log("✅ Logout thành công");
-    } catch (error) {
-      console.error("❌ Logout thất bại:", error);
+    } catch (err) {
+      console.error("❌ Logout thất bại:", err);
     }
   };
 
@@ -27,8 +37,8 @@ export const useAuth = () => {
     initialized,
     authenticated: keycloak.authenticated,
     token: keycloak.token,
-    username: keycloak.tokenParsed?.preferred_username,
+    username: keycloak.tokenParsed?.preferred_username || "",
     login,
-    logout
+    logout,
   };
 };

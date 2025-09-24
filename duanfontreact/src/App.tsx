@@ -47,11 +47,15 @@ function AnimatedRoutes() {
     window.addEventListener("storage", handleStorageChange);
 
     // Kiểm tra token khi load trang
-    if (token && location.pathname === "/login") {
-      navigate("/dashboard"); // Điều hướng về dashboard nếu đã có token
-    } else if (!token && location.pathname !== "/login") {
+if (token) {
+    if (location.pathname === "/login") {
+      navigate("/dashboard");
+    }
+  } else {
+    if (location.pathname !== "/login") {
       navigate("/login");
     }
+  }
 
     return () => window.removeEventListener("storage", handleStorageChange);
   }, [location.pathname, token, navigate]);

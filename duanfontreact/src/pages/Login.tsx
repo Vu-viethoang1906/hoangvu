@@ -3,17 +3,15 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import "../styles/login.css";
-import {useAuth} from  "../auth/useKeycloak";
+import { useAuth } from "../auth/useKeycloak";
 
 const Login: React.FC = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [remember, setRemember] = useState(false);
   const [loading, setLoading] = useState(false);
-  const { authenticated, username, login, logout } = useAuth();
+  const { login } = useAuth(); // chỉ giữ login SSO
   const navigate = useNavigate();
-
- 
 
   // Load email đã lưu khi component mount
   useEffect(() => {
@@ -24,9 +22,7 @@ const Login: React.FC = () => {
     }
   }, []);
 
-
-
-  // Xử lý đăng nhập
+  // Xử lý đăng nhập Local
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
@@ -44,20 +40,23 @@ const Login: React.FC = () => {
         localStorage.setItem("token", token);
         localStorage.setItem("email", user.email);
         localStorage.setItem("userId", user.id);
+        localStorage.setItem("Type_login", "Local");
 
         if (remember) {
           localStorage.setItem("remember_email", email);
         } else {
           localStorage.removeItem("remember_email");
         }
-        localStorage.setItem("Type_login","Local");
+
         toast.success("Đăng nhập thành công 🎉");
         navigate("/dashboard");
       } else {
         toast.error(`Đăng nhập thất bại ❌ ${message || ""}`);
       }
     } catch (error: any) {
-      toast.error(`Sai email hoặc mật khẩu ❌ ${error.response?.data?.message || ""}`);
+      toast.error(
+        `Sai email hoặc mật khẩu ❌ ${error.response?.data?.message || ""}`
+      );
     } finally {
       setLoading(false);
     }
@@ -65,11 +64,7 @@ const Login: React.FC = () => {
 
   // Xử lý logout
   const handleLogout = () => {
-    localStorage.removeItem("token");
-    localStorage.removeItem("email");
-    localStorage.removeItem("userId");
-    localStorage.removeItem("remember_email");
-    localStorage.clear(); // Xóa email nhớ khi logout
+    localStorage.clear();
     toast.success("Đăng xuất thành công!");
     navigate("/login");
   };
@@ -135,7 +130,7 @@ const Login: React.FC = () => {
               <button
                 type="button"
                 className="cg1d"
-                onClick={login} //
+                onClick={() => login()} // ❌ chỉ gọi login SSO, không navigate dashboard nữa
               >
                 Đăng nhập CodeGym ID
               </button>
@@ -144,7 +139,11 @@ const Login: React.FC = () => {
             {/* Hiển thị nút logout nếu đã đăng nhập */}
             {token && (
               <div className="text-center mt-3">
-                <button type="button" className="dangnhapbtn" onClick={handleLogout}>
+                <button
+                  type="button"
+                  className="dangnhapbtn"
+                  onClick={handleLogout}
+                >
                   Đăng xuất
                 </button>
               </div>
