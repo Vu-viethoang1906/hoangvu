@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const axiosInstance = axios.create({
-  baseURL: "https://3e4e14e26335.ngrok-free.app/api",
+  baseURL: " http://localhost:3005/api",
 });
 
 // Thêm token vào header trước mỗi request

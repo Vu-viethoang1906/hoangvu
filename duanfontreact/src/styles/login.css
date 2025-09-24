@@ -1,97 +1,146 @@
 @font-face {
-    font-family: 'Samsung Sharp Sans Regular';
-    font-style: normal;
-    font-weight: normal;
-    src: local('Samsung Sharp Sans Regular'), url('samsungsharpsans.woff') format('woff');
-    }
-    
-    
-    @font-face {
-    font-family: 'Samsung Sharp Sans Medium';
-    font-style: normal;
-    font-weight: normal;
-    src: local('Samsung Sharp Sans Medium'), url('samsungsharpsans-medium.woff') format('woff');
-    }
-    
-    
-    @font-face {
-    font-family: 'Samsung Sharp Sans Bold';
-    font-style: normal;
-    font-weight: normal;
-    src: local('Samsung Sharp Sans Bold'), url('samsungsharpsans-bold.woff') format('woff');
-    }
-    
-    @font-face {
-        font-family: 'Samsung Sharp Sans Bold VH';
-        font-style: normal;
-        font-weight: normal;
-        src: local('Samsung Sharp Sans Bold VH'), url('iCiel-SamsungSharpSans-Bold_SMCPS.ttf') format('truetype');
-    }
-    
-    @font-face {
-        font-family: 'Samsung Sharp Sans Regular OpenType';
-        font-style: normal;
-        font-weight: normal;
-        src: local('Samsung Sharp Sans Regular OpenType'), url('samsungsharpsans.otf') format('opentype');
-        }
-        
-    
-        @font-face {
-        font-family: 'Samsung Sharp Sans Medium OpenType';
-        font-style: normal;
-        font-weight: normal;
-        src: local('Samsung Sharp Sans Medium OpenType'), url('samsungsharpsans-medium.otf') format('opentype');
-        }
-        
-    
-        @font-face {
-        font-family: 'Samsung Sharp Sans Bold OpenType';
-        font-style: normal;
-        font-weight: normal;
-        src: local('Samsung Sharp Sans Bold OpenType'), url('samsungsharpsans-bold.otf') format('opentype');
-        }
+  font-family: 'Samsung Sharp Sans Regular';
+  src: local('Samsung Sharp Sans Regular'),
+    url('samsungsharpsans.woff') format('woff');
+}
+
+@font-face {
+  font-family: 'Samsung Sharp Sans Medium';
+  src: local('Samsung Sharp Sans Medium'),
+    url('samsungsharpsans-medium.woff') format('woff');
+}
+
+@font-face {
+  font-family: 'Samsung Sharp Sans Bold';
+  src: local('Samsung Sharp Sans Bold'),
+    url('samsungsharpsans-bold.woff') format('woff');
+}
+
+@font-face {
+  font-family: 'Samsung Sharp Sans Bold VH';
+  src: local('Samsung Sharp Sans Bold VH'),
+    url('iCiel-SamsungSharpSans-Bold_SMCPS.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'Samsung Sharp Sans Regular OpenType';
+  src: local('Samsung Sharp Sans Regular OpenType'),
+    url('samsungsharpsans.otf') format('opentype');
+}
+
+@font-face {
+  font-family: 'Samsung Sharp Sans Medium OpenType';
+  src: local('Samsung Sharp Sans Medium OpenType'),
+    url('samsungsharpsans-medium.otf') format('opentype');
+}
+
+@font-face {
+  font-family: 'Samsung Sharp Sans Bold OpenType';
+  src: local('Samsung Sharp Sans Bold OpenType'),
+    url('samsungsharpsans-bold.otf') format('opentype');
+}
+
+/* -------- Layout chính -------- */
 .login-page {
+  height: 100vh; /* Chiếm toàn bộ chiều cao màn hình */
+  width: 100%; /* Chiếm toàn bộ chiều rộng màn hình */
   display: flex;
-  height: 100vh;
-  font-family: Arial, sans-serif;
+  justify-content: center;
+  align-items: center; /* Căn giữa chiều dọc */
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
 }
 
-/* Cột trái: chứa form */
+.wrapper {
+  display: flex;
+  width: 100%; /* Loại bỏ giới hạn max-width để full chiều rộng */
+  height: 100%; /* Đảm bảo chiếm toàn bộ chiều cao */
+}
+
+/* Form đăng nhập bên trái */
 .login-left {
-  flex: 5;
-  background-color: #ffffff; /* tím nhạt */
-  display: flex;
-  flex-direction:column;
-  justify-content: space-evenly;
+  flex: 1;
+  background: #ffffff;
   padding: 40px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  box-shadow: 2px 0 8px rgba(0, 0, 0, 0.1);
+  min-height: 100%; /* Đảm bảo giãn tối đa */
 }
 
-/* Card form */
+/* Cột phải: ảnh nền */
+.login-right {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  min-height: 100%; /* Đảm bảo giãn tối đa */
+}
 
+.login-bg-img {
+  width: 100%; /* Giãn full chiều rộng */
+  height: 100%; /* Giãn full chiều cao */
+  object-fit: cover; /* Đảm bảo ảnh nền full mà không bị cắt */
+}
 
 /* Logo */
 .login-logo {
-  max-width: 400px;
+  max-width: 250px;
   margin-bottom: 20px;
 }
 
-/* Cột phải: background xanh */
-.login-right {
-  flex: 7;
-  background: linear-gradient(to bottom, #2a6ec8, #003163);
+/* Typography */
+.fgg {
+  font-size: 25px;
+  font-family: 'Samsung Sharp Sans Bold VH';
 }
-.text-center mb-4{
-    font-size: 10px;
+
+/* Input */
+.nput1,
+.nput2 {
+  box-shadow: 0 4px 5px rgba(90, 89, 89, 0.3);
+  border: none;
+  border-radius: 6px;
+  padding: 10px 14px;
 }
-.fgg{
-    font-size: 15px;
-    font-family: 'Samsung Sharp Sans Bold VH';
+
+/* Button đăng nhập */
+.dangnhapbtn {
+  background-color: #003985;
+  padding: 10px;
+  width: 100%;
+  color: #ffffff;
+  border: none;
+  border-radius: 6px;
+  font-weight: bold;
+  transition: background 0.3s;
 }
-.nput1{
-    box-shadow: 0 4px 5px rgb(90, 89, 89);
-    border: none;
+
+.dangnhapbtn:hover {
+  background-color: #002a61;
 }
-.nput2{
-    box-shadow: 0 4px 5px rgb(90, 89, 89);
-    border: none;
+
+/* Button CodeGym ID */
+.cg1d {
+  background-color: #002a61;
+  padding: 10px 20px;
+  color: #ffffff;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.cg1d:hover {
+  background-color: #001d45;
+}
+
+/* Align center cho button */
+.btcg,
+.sd {
+  display: flex;
+  justify-content: center;
+  margin-top: 15px;
 }
