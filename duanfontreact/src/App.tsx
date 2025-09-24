@@ -14,7 +14,6 @@ import CodeGymLogin from "./pages/CodeGymLogin";
 import Home from "./pages/Home";
 import Dashboard from "./pages/Dashboard";
 import Projects from "./pages/Projects";
-import Filters from "./pages/Filters";
 
 const pageTransition = {
   initial: { opacity: 0, y: 20 },
@@ -30,16 +29,31 @@ function AnimatedRoutes() {
   const location = useLocation();
   const navigate = useNavigate();
   const token = localStorage.getItem("token");
-
+ const SSOtoken = localStorage.getItem("SSOToken");
+  // Hàm kiểm tra và điều hướng khi token thay đổi
   useEffect(() => {
-    console.log("Checking navigation, pathname:", location.pathname, "Token:", token);
+    const handleStorageChange = (event: StorageEvent) => {
+      if (event.key === "token") {
+        const newToken = localStorage.getItem("token");
+        if (!newToken && location.pathname !== "/login") {
+          navigate("/login"); // Điều hướng về login khi token bị xóa
+        } else if (newToken && location.pathname === "/login") {
+          navigate("/dashboard"); // Điều hướng về dashboard khi token xuất hiện
+        }
+      }
+    };
+
+    // Lắng nghe sự kiện thay đổi localStorage
+    window.addEventListener("storage", handleStorageChange);
+
+    // Kiểm tra token khi load trang
     if (token && location.pathname === "/login") {
-      console.log("Redirecting to /dashboard due to existing token");
-      navigate("/dashboard", { replace: true });
-    } else if (!token && location.pathname !== "/login" && location.pathname !== "/login-codegym") {
-      console.log("Redirecting to /login, no token");
-      navigate("/login", { replace: true });
+      navigate("/dashboard"); // Điều hướng về dashboard nếu đã có token
+    } else if (!token && location.pathname !== "/login") {
+      navigate("/login");
     }
+
+    return () => window.removeEventListener("storage", handleStorageChange);
   }, [location.pathname, token, navigate]);
 
   return (
@@ -95,18 +109,6 @@ function AnimatedRoutes() {
             token ? (
               <motion.div {...pageTransition}>
                 <Projects />
-              </motion.div>
-            ) : (
-              <Navigate to="/login" replace />
-            )
-          }
-        />
-        <Route
-          path="/filters"
-          element={
-            token ? (
-              <motion.div {...pageTransition}>
-                <Filters />
               </motion.div>
             ) : (
               <Navigate to="/login" replace />

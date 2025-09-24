@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "../styles/dashboard.css";
+import {useAuth} from  "../auth/useKeycloak";
 
 const Dashboard: React.FC = () => {
+  const {  logout } = useAuth();
   const navigate = useNavigate();
   const token = localStorage.getItem("token");
   const email = localStorage.getItem("email") || "User";
@@ -16,18 +18,31 @@ const Dashboard: React.FC = () => {
     }
   }, [token, navigate]);
 
-  const handleLogout = () => {
+ const handleLogout = () => {
+const typeLogin = localStorage.getItem("Type_login");
+
+  if (typeLogin === "SSO") {
+    logout();
+    localStorage.clear();
+       navigate("/login");
+     // Keycloak sẽ tự redirect về login page hoặc bạn có thể chỉ định redirectUri
+  } else {
+    // Xóa localStorage nếu là login thường
     localStorage.removeItem("token");
     localStorage.removeItem("email");
     localStorage.removeItem("userId");
+    localStorage.removeItem("Type_login");
+    
     navigate("/login");
-  };
+  }
+};
+
 
   // Danh sách các mục trong sidebar
   const menuItems = [
-    { name: "Dashboard", icon: "📊", active: true, path: "/dashboard" },
+    { name: "Dashboard", icon: "📊", active: true },
     { name: "Projects", icon: "📁", active: false, path: "/projects" },
-    { name: "Filters", icon: "🔎", active: false, path: "/filters" },
+    { name: "Filters", icon: "🔎", active: false },
     { name: "Reports", icon: "📊", active: false },
     { name: "Teams", icon: "👥", active: false },
     { name: "Settings", icon: "⚙️", active: false },
@@ -93,13 +108,13 @@ const Dashboard: React.FC = () => {
         </div>
       </div>
       <div className="main-content">
-        {/* Top bar */}
-        <div className="topbar">
-          <div className="topbar-right">
+        <div className="header">
+          <div className="header-left">ECP - Main e-commerce platform development</div>
+          <div className="header-right">
             <span className="icon">?</span>
             <span className="icon">🔔</span>
             <div className="user-section" onClick={() => setShowProfile(!showProfile)}>
-              <img src="https://via.placeholder.com/30?text=U" alt="User" className="user-icon" />
+              <img src="https://via.placeholder.com/30?text=User+Avatar" alt="User" className="user-icon" />
               {showProfile && (
                 <div className="profile-dropdown">
                   <p><strong>Email:</strong> {email}</p>
@@ -109,69 +124,51 @@ const Dashboard: React.FC = () => {
             </div>
           </div>
         </div>
-
-        {/* Hero header */}
-        <div className="hero">
-          <div className="badge">ECP</div>
-          <div>
-            <h1 className="hero-title">E-commerce Platform</h1>
-            <p className="hero-subtitle">Main e-commerce platform development</p>
+        <div className="dashboard-grid">
+          <div className="dashboard-card">
+            <h3>Total Issues</h3>
+            <p className="card-value">4 <span className="sub-text">(+2 from last week)</span></p>
           </div>
-        </div>
-
-        {/* Stat cards */}
-        <div className="stat-grid">
-          <div className="stat-card">
-            <div className="stat-title">Total Issues</div>
-            <div className="stat-value">4</div>
-            <div className="stat-note">+2 from last week</div>
+          <div className="dashboard-card">
+            <h3>Completed</h3>
+            <p className="card-value">1 <span className="sub-text">(25% completion rate)</span></p>
+            <span className="status-icon">✔️</span>
           </div>
-          <div className="stat-card">
-            <div className="stat-title">Completed</div>
-            <div className="stat-value">1</div>
-            <div className="stat-note">25% completion rate</div>
+          <div className="dashboard-card">
+            <h3>In Progress</h3>
+            <p className="card-value">1 <span className="sub-text">(Active development)</span></p>
+            <span className="status-icon">⏳</span>
           </div>
-          <div className="stat-card">
-            <div className="stat-title">In Progress</div>
-            <div className="stat-value">1</div>
-            <div className="stat-note">Active development</div>
+          <div className="dashboard-card high-priority">
+            <h3>High Priority</h3>
+            <p className="card-value">2 <span className="sub-text">(Needs attention)</span></p>
+            <span className="status-icon">⚠️</span>
           </div>
-          <div className="stat-card danger">
-            <div className="stat-title">High Priority</div>
-            <div className="stat-value">2</div>
-            <div className="stat-note">Needs attention</div>
-          </div>
-        </div>
-
-        {/* Progress panel */}
-        <div className="panel">
-          <div className="panel-header">
-            <div className="panel-title">Project Progress</div>
-            <div className="panel-subtitle">Overall completion status</div>
-          </div>
-          <div className="progressbar">
-            <div className="progressbar-fill" style={{ width: "25%" }} />
-            <div className="progressbar-label">25%</div>
-          </div>
-          <div className="progress-meta">
-            <span>To Do: 1</span>
-            <span>In Progress: 1</span>
-            <span>Review: 1</span>
-            <span>Done: 1</span>
-          </div>
-        </div>
-
-        {/* Bottom cards */}
-        <div className="bottom-grid">
-          <div className="panel">
-            <div className="panel-title">Issue Types</div>
-            <div className="issue-types">
-              <span className="dot" style={{ background: "#de350b" }} /> Bugs: 1
+          <div className="dashboard-card progress-card">
+            <h3>Project Progress</h3>
+            <p>Overall completion status</p>
+            <div className="progress-bar">
+              <div className="progress-fill" style={{ width: "25%" }}></div>
+            </div>
+            <p className="completion-rate">Completion Rate: 25%</p>
+            <div className="progress-status">
+              <span>To Do: 1</span>
+              <span>In Progress: 1</span>
+              <span>Review: 1</span>
+              <span>Done: 1</span>
             </div>
           </div>
-          <div className="panel">
-            <div className="panel-title">Team Members</div>
-            <div className="team-members">
+          <div className="dashboard-card">
+            <h3>Issue Types</h3>
+            <p>Distribution of work items</p>
+            <div className="issue-type">
+              <span className="issue-dot" style={{ backgroundColor: "red" }}></span> Bugs: 1
+            </div>
+          </div>
+          <div className="dashboard-card">
+            <h3>Team Members</h3>
+            <p>Project contributors</p>
+            <div className="team-member">
               <img src="https://via.placeholder.com/30" alt="Member" className="member-icon" />
               <span>John Doe</span>
             </div>

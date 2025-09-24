@@ -372,36 +372,3 @@
 .dashboard-card:hover .member-icon {
   box-shadow: 0 0 5px rgba(0, 82, 204, 0.5);
 }
-
-/* ----- New Dashboard polish (hero, stat cards, panels) ----- */
-.main-content { background: #fafbfc; }
-
-.topbar { display: flex; justify-content: flex-end; margin-bottom: 12px; }
-.topbar .icon { margin-left: 12px; }
-
-.hero { display: flex; align-items: center; gap: 14px; margin-bottom: 16px; }
-.badge { background: #e9efff; color: #0052cc; font-weight: 700; padding: 8px 10px; border-radius: 8px; }
-.hero-title { font-size: 28px; color: #172b4d; margin: 0; }
-.hero-subtitle { color: #5e6c84; margin: 2px 0 0 0; }
-
-.stat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; margin-bottom: 16px; }
-.stat-card { background: #fff; border: 1px solid #ebecf0; border-radius: 8px; padding: 16px; }
-.stat-card .stat-title { color: #5e6c84; font-size: 13px; }
-.stat-card .stat-value { color: #172b4d; font-weight: 700; font-size: 28px; margin-top: 6px; }
-.stat-card .stat-note { color: #6b778c; font-size: 12px; margin-top: 6px; }
-.stat-card.danger { border-left: 4px solid #de350b; }
-
-.panel { background: #fff; border: 1px solid #ebecf0; border-radius: 8px; padding: 16px; }
-.panel + .panel { margin-top: 16px; }
-.panel-header { margin-bottom: 8px; }
-.panel-title { color: #172b4d; font-weight: 600; }
-.panel-subtitle { color: #6b778c; font-size: 12px; }
-
-.progressbar { position: relative; height: 10px; background: #ebecf0; border-radius: 6px; margin: 12px 0; }
-.progressbar-fill { position: absolute; top:0; left:0; bottom:0; background: #0052cc; border-radius: 6px; }
-.progressbar-label { text-align: right; color: #6b778c; font-size: 12px; margin-top: 6px; }
-.progress-meta { display: flex; justify-content: space-between; color: #6b778c; font-size: 12px; }
-
-.bottom-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px; margin-top: 16px; }
-.issue-types, .team-members { display: flex; align-items: center; gap: 10px; margin-top: 10px; }
-.dot { width: 10px; height: 10px; border-radius: 50%; }

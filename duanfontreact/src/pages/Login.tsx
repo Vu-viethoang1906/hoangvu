@@ -3,15 +3,19 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import "../styles/login.css";
+import {useAuth} from  "../auth/useKeycloak";
 
 const Login: React.FC = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [remember, setRemember] = useState(false);
   const [loading, setLoading] = useState(false);
-
+  const { authenticated, username, login, logout } = useAuth();
   const navigate = useNavigate();
 
+ 
+
+  // Load email đã lưu khi component mount
   useEffect(() => {
     const savedEmail = localStorage.getItem("remember_email");
     if (savedEmail) {
@@ -20,6 +24,9 @@ const Login: React.FC = () => {
     }
   }, []);
 
+
+
+  // Xử lý đăng nhập
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
@@ -43,7 +50,7 @@ const Login: React.FC = () => {
         } else {
           localStorage.removeItem("remember_email");
         }
-
+        localStorage.setItem("Type_login","Local");
         toast.success("Đăng nhập thành công 🎉");
         navigate("/dashboard");
       } else {
@@ -56,20 +63,24 @@ const Login: React.FC = () => {
     }
   };
 
+  // Xử lý logout
   const handleLogout = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("email");
     localStorage.removeItem("userId");
     localStorage.removeItem("remember_email");
+    localStorage.clear(); // Xóa email nhớ khi logout
     toast.success("Đăng xuất thành công!");
     navigate("/login");
   };
 
+  // Kiểm tra trạng thái token để hiển thị nút logout nếu đã đăng nhập
   const token = localStorage.getItem("token");
 
   return (
     <div className="login-page">
       <div className="wrapper">
+        {/* Cột trái: Form đăng nhập */}
         <div className="login-left">
           <div className="text-center">
             <img src="/codegymlogo.png" alt="Logo" className="login-logo" />
@@ -124,15 +135,13 @@ const Login: React.FC = () => {
               <button
                 type="button"
                 className="cg1d"
-                onClick={() => {
-                  console.log("Navigating to /login-codegym");
-                  navigate("/login-codegym", { replace: true });
-                }}
+                onClick={login} //
               >
                 Đăng nhập CodeGym ID
               </button>
             </div>
 
+            {/* Hiển thị nút logout nếu đã đăng nhập */}
             {token && (
               <div className="text-center mt-3">
                 <button type="button" className="dangnhapbtn" onClick={handleLogout}>
@@ -143,6 +152,7 @@ const Login: React.FC = () => {
           </form>
         </div>
 
+        {/* Cột phải: Ảnh nền */}
         <div className="login-right">
           <img
             src="https://blog.spacematrix.com/sites/default/files/styles/resp_large_breakpoints_theme_archi_dark_wide_1x/public/pantone_linkedin_cover.jpg"

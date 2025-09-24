@@ -18,7 +18,7 @@ const Projects: React.FC = () => {
   const menuItems = [
     { name: "Dashboard", icon: "📊", active: false, path: "/dashboard" },
     { name: "Projects", icon: "📁", active: true, path: "/projects" },
-    { name: "Filters", icon: "🔎", active: false, path: "/filters" },
+    { name: "Filters", icon: "🔎", active: false },
     { name: "Reports", icon: "📊", active: false },
     { name: "Teams", icon: "👥", active: false },
     { name: "Settings", icon: "⚙️", active: false },
