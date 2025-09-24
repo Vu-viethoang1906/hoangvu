@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API_URL = "https://3e4e14e26335.ngrok-free.app/api/auth";
+const API_URL = " http://localhost:3005/api";
 
 export const loginApi = async (email: string, password: string) => {
   const res = await axios.post(`${API_URL}/login`, { email, password });
