@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "../styles/dashboard.css";
 import { useAuth } from "../auth/useKeycloak";
-
+import { logoutApi } from "../api/authApi";
 const Dashboard: React.FC = () => {
   const { logout ,username  } = useAuth(); // Logout SSO từ Keycloak
   const navigate = useNavigate();
@@ -14,18 +14,24 @@ const Dashboard: React.FC = () => {
   const [isProjectsOpen, setIsProjectsOpen] = useState(false);
 
   // Nếu không có token thì quay lại trang login
-  useEffect(() => {
+  useEffect( () => {
     if (!token) {
       navigate("/login");
     }
   }, [token, navigate]);
 
-  const handleLogout = () => {
+  const handleLogout = async () => {
     const typeLogin = localStorage.getItem("Type_login");
 
     if (typeLogin === "SSO") {
       logout(); // Keycloak tự redirect về login page
     } else {
+      const token = localStorage.getItem("token");
+      console.log(token);
+      if (token) {
+          await logoutApi(); // gửi token tới backend
+        }
+        console.log("đăng xuất thành công");
       localStorage.clear(); // Xóa toàn bộ dữ liệu local login
       navigate("/login");
     }

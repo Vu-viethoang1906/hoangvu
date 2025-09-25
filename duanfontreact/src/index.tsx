@@ -1,31 +1,27 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import "./index.css";
-import App from "./App";
+import AppWrapper from "./AppWrapper";
 import reportWebVitals from "./reportWebVitals";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { ReactKeycloakProvider } from "@react-keycloak/web";
-
 import keycloak from "./keycloack/Keycloak";
-
-const root = ReactDOM.createRoot(
-  document.getElementById("root") as HTMLElement
-);
-
-// Hàm xử lý sự kiện của Keycloak (không log ra nữa)
+import { BrowserRouter } from "react-router-dom"; //
 const eventLogger = () => {};
 
-// Hàm xử lý token (chỉ lưu vào localStorage, không log)
 const tokenLogger = (tokens: any) => {
   if (tokens?.token) {
     localStorage.setItem("token", tokens.token);
     localStorage.setItem("refreshToken", tokens.refreshToken || "");
     localStorage.setItem("Type_login", "SSO");
   } else {
-    localStorage.clear();
+    if (localStorage.getItem("Type_login") === "SSO") {
+      localStorage.clear();
+    }
   }
 };
 
+const root = ReactDOM.createRoot(document.getElementById("root") as HTMLElement);
 root.render(
   <ReactKeycloakProvider
     authClient={keycloak}
@@ -37,7 +33,9 @@ root.render(
       redirectUri: "http://localhost:3000/dashboard",
     }}
   >
-    <App />
+  <BrowserRouter>
+      <AppWrapper />
+    </BrowserRouter>
   </ReactKeycloakProvider>
 );
 

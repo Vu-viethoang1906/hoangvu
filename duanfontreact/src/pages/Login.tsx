@@ -41,7 +41,7 @@ const Login: React.FC = () => {
         localStorage.setItem("email", user.email);
         localStorage.setItem("userId", user.id);
         localStorage.setItem("Type_login", "Local");
-
+       
         if (remember) {
           localStorage.setItem("remember_email", email);
         } else {
