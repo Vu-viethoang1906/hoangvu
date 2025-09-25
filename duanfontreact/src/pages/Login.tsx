@@ -55,7 +55,7 @@ const Login: React.FC = () => {
       }
     } catch (error: any) {
       toast.error(
-        `Sai email hoặc mật khẩu ❌ ${error.response?.data?.message || ""}`
+        `Sai username hoặc password ❌ ${error.response?.data?.message || ""}`
       );
     } finally {
       setLoading(false);
@@ -85,9 +85,9 @@ const Login: React.FC = () => {
           <form onSubmit={handleSubmit}>
             <div className="mb-3">
               <input
-                type="email"
+                type="text"
                 className="form-control nput1"
-                placeholder="Tên người dùng / Email"
+                placeholder="Username"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
@@ -98,7 +98,7 @@ const Login: React.FC = () => {
               <input
                 type="password"
                 className="form-control nput2"
-                placeholder="Mật khẩu"
+                placeholder="Password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required
