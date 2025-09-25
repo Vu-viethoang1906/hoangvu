@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import "../styles/codegym-login.css"; // CSS riêng cho trang này
 
@@ -14,10 +15,10 @@ const CodeGymLogin: React.FC = () => {
       localStorage.setItem("token", "fake-codegym-token-abc123");
       localStorage.setItem("email", "user@codegym.vn"); // Lưu email để hiển thị trên dashboard
       localStorage.setItem("userId", "fake-user-id-001"); // Lưu userId giả lập
-      alert("✅ Đăng nhập CodeGym ID thành công!");
+      toast.success("Đăng nhập thành công 🎉");
       navigate("/dashboard"); // Thay đổi từ /home thành /dashboard
     } else {
-      alert("❌ Sai email hoặc mật khẩu CodeGym ID!");
+      toast.error("Sai username hoặc password ❌");
     }
   };
 
@@ -28,8 +29,8 @@ const CodeGymLogin: React.FC = () => {
 
         <form onSubmit={handleLogin}>
           <input
-            type="email"
-            placeholder="Nhập tên người dùng / Email"
+            type="text"
+            placeholder="Username"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
@@ -37,7 +38,7 @@ const CodeGymLogin: React.FC = () => {
 
           <input
             type="password"
-            placeholder="Mật khẩu"
+            placeholder="Password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
